@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Registration Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    input:focus {
+      border-color: #4caf50;
+      outline: none;
+    }
+
+    .error {
+      color: red;
+      font-size: 13px;
+      margin-top: -8px;
+      margin-bottom: 10px;
+      height: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4caf50;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.2s ease;
+    }
+
+    button:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+<form id="regForm" novalidate>
+  <h2>Register</h2>
+
+  <label for="name">Name</label>
+  <input type="text" id="name" />
+  <div class="error" id="nameErr"></div>
+
+  <label for="email">Email</label>
+  <input type="text" id="email" />
+  <div class="error" id="emailErr"></div>
+
+  <label for="password">Password</label>
+  <input type="password" id="password" />
+  <div class="error" id="passErr"></div>
+
+  <button type="submit" id="submitBtn" disabled>Submit</button>
+</form>
+
+<script>
+  const nameInput = document.getElementById("name");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const submitBtn = document.getElementById("submitBtn");
+
+  const nameErr = document.getElementById("nameErr");
+  const emailErr = document.getElementById("emailErr");
+  const passErr = document.getElementById("passErr");
+
+  function validatePassword(password) {
+    return (
+      password.length >= 6 &&
+      /[A-Z]/.test(password) &&
+      /[a-z]/.test(password) &&
+      /[0-9]/.test(password) &&
+      /[!@#$%^&*(),.?":{}|<>]/.test(password)
+    );
+  }
+
+  function validateForm() {
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    let isValid = true;
+
+    // Name validation
+    if (name === "") {
+      nameErr.textContent = "Name is required.";
+      isValid = false;
+    } else {
+      nameErr.textContent = "";
+    }
+
+    // Email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      emailErr.textContent = "Enter a valid email.";
+      isValid = false;
+    } else {
+      emailErr.textContent = "";
+    }
+
+    // Password validation
+    if (!validatePassword(password)) {
+      passErr.textContent = "Min 6 chars with A-Z, a-z, 0-9, and special char.";
+      isValid = false;
+    } else {
+      passErr.textContent = "";
+    }
+
+    // Enable/disable button
+    submitBtn.disabled = !isValid;
+  }
+
+  [nameInput, emailInput, passwordInput].forEach(input =>
+    input.addEventListener("input", validateForm)
+  );
+
+  document.getElementById("regForm").addEventListener("submit", function (e) {
+    e.preventDefault(); // it prevents the default form submission
+    if (!submitBtn.disabled) {
+      alert("Form submitted successfully!");
+      // Reset or handle data as needed
+    }
+  });
+    
+</script>
+
+</body>
+</html>
